@@ -56,4 +56,10 @@ public class ProcessJUnitTest {
     assertThat(processInstance).isEnded();
   }
 
+  @Test
+  @Deployment(resources = "twitter_qa.bpmn")
+  public void testTweetRejected() {
+
+  }
+
 }
