@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.test.Deployment;
+import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
 import org.camunda.bpm.extension.process_test_coverage.junit5.ProcessEngineCoverageExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,7 +60,18 @@ public class ProcessJUnitTest {
   @Test
   @Deployment(resources = "twitter_qa.bpmn")
   public void testTweetRejected() {
+    Map<String, Object> varMap = new HashMap<>();
+    varMap.put("approved", true);
+    varMap.put("content", "testTweetRejected method content");
 
+    ProcessInstance processInstance = runtimeService()
+            .createProcessInstanceByKey("TwitterQAProcess")
+            .setVariables(varMap)
+            .startAfterActivity(findId("Review Tweet"))
+            .execute();
+    assertThat(processInstance).isWaitingAt("publishOnTwitter");
+    BpmnAwareTests.execute(BpmnAwareTests.job());
+    assertThat(processInstance).isEnded().hasPassed(findId("Tweet rejected"));
   }
 
 }

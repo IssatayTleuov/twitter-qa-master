@@ -4,14 +4,14 @@
     <bpmn:startEvent id="StartEvent_1" name="Tweet received">
       <bpmn:outgoing>Flow_0s9f1l1</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0s9f1l1" sourceRef="StartEvent_1" targetRef="Activity_05vjzkw" />
+    <bpmn:sequenceFlow id="Flow_0s9f1l1" sourceRef="StartEvent_1" targetRef="reviewTweet" />
     <bpmn:exclusiveGateway id="Gateway_1ne7q2n" name="Approved?">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_1b5klny</bpmn:incoming>
       <bpmn:outgoing>Flow_0j3g2ae</bpmn:outgoing>
       <bpmn:outgoing>Flow_02st4o0</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1b5klny" sourceRef="Activity_05vjzkw" targetRef="Gateway_1ne7q2n" />
+    <bpmn:sequenceFlow id="Flow_1b5klny" sourceRef="reviewTweet" targetRef="Gateway_1ne7q2n" />
     <bpmn:sequenceFlow id="Flow_0j3g2ae" name="yes" sourceRef="Gateway_1ne7q2n" targetRef="publishOnTwitter">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{approved == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -33,7 +33,7 @@
       <bpmn:incoming>Flow_0j3g2ae</bpmn:incoming>
       <bpmn:outgoing>Flow_02gz8wt</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="Activity_05vjzkw" name="Review Tweet" camunda:candidateGroups="management">
+    <bpmn:userTask id="reviewTweet" name="Review Tweet" camunda:candidateGroups="management">
       <bpmn:incoming>Flow_0s9f1l1</bpmn:incoming>
       <bpmn:outgoing>Flow_1b5klny</bpmn:outgoing>
     </bpmn:userTask>
@@ -101,7 +101,7 @@
       <bpmndi:BPMNShape id="Activity_1qmqntl_di" bpmnElement="publishOnTwitter">
         <dc:Bounds x="530" y="87" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1gdgbyw_di" bpmnElement="Activity_05vjzkw">
+      <bpmndi:BPMNShape id="Activity_1gdgbyw_di" bpmnElement="reviewTweet">
         <dc:Bounds x="270" y="87" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
